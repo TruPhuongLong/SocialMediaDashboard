@@ -1,5 +1,6 @@
 import { User } from '../models/user';
 import jwt from 'jsonwebtoken';
+import CONSTANCE from '../libs/constance';
 
 module.exports = app => {
 
@@ -35,7 +36,8 @@ module.exports = app => {
             }
             const {_id, username, email} = user;
             const _user = {_id, username, email};
-            res.json(_user);
+            const token = jwt.sign(_user, CONSTANCE.JWT_KEY, {expiresIn: "15d"});
+            res.json({token});
         })
     });
 
