@@ -1,10 +1,27 @@
 import {Comment} from '../models/comment';
-import {ObjectID} from 'mongodb';
+import {ObjectId} from 'mongodb';
 
 module.exports = app => {
 
-    app.get('/api/comments', (req, res)=>{
+    //GET /list comments of post:
+    app.get('/api/comments/:postid', (req, res)=>{
+        const postid = req.params.postid;
 
+        //validate postid:
+        if(!ObjectId.isValid(postid)){
+            const err = new Error();
+            err.status = 403;
+            err.message = 'invalid postid'
+            res.send(err);
+        }
+
+        //good to go:
+        Comment.find({postid})
+        .then(comments => {
+            console.log(comments);
+            res.send(comments)
+        })
+        .catch(error => res.send(error));
     });
 
     app.post('/api/comments', (req, res)=>{
@@ -16,10 +33,10 @@ module.exports = app => {
         })
 
         // validate userid and postid:
-        if(!ObjectID.isValid(newComment.userid) || !ObjectID.isValid(newComment.postid)){
+        if(!ObjectId.isValid(newComment.userid) || !ObjectId.isValid(newComment.postid)){
             const err = new Error();
             err.status = 403;
-            err.message = 'invalid userid'
+            err.message = 'invalid userid or postid'
             res.send(err);
         }
 

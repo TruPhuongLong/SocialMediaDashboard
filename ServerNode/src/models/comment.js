@@ -9,11 +9,13 @@ const Comment = mongoose.model('Comment', {
     },
     userid: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     postid: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     }
 });
 

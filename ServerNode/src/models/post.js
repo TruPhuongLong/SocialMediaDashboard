@@ -16,7 +16,8 @@ const Post = mongoose.model('Post', {
     },
     userid: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     }
 });
 
