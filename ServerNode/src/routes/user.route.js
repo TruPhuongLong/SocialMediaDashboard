@@ -54,4 +54,23 @@ module.exports = app => {
             });
         }
     });
+
+
+    //API:
+    //GET /list users
+    app.get('/api/users', (req, res)=>{
+        User.find()
+        .then(users => {
+            return users.map(user => {
+                const {_id, email, username} = user;
+                return {_id, email, username};
+            })
+        })
+        .then(users => {
+            res.send(users);
+        })
+        .catch(error => {
+            res.send(error);
+        })
+    })
 }
