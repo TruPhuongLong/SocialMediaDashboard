@@ -1,10 +1,13 @@
 import {Post} from '../models/post';
 import {ObjectId} from 'mongodb';
+import multer from 'multer';
+
+const upload = multer({dest: 'uploads/'});
 
 module.exports = app => {
-
+    
     //GET /list posts of each user
-    app.get('/api/posts/:userid', (req, res)=>{
+    app.get('/api/posts/listposts/:userid', (req, res)=>{
         const userid = req.params.userid;
         Post.find({userid})
         .then(posts => res.send(posts))
@@ -12,23 +15,44 @@ module.exports = app => {
     })
 
     //GET /list albums of each user
-    app.get('/api/posts/albums/:userid', (req, res)=>{
+    app.get('/api/posts/listalbums/:userid', (req, res)=>{
         const userid = req.params.userid;
-        Post.find({userid, imageurl: { $ne: null, $gt: [] }})
+        Post.find({userid})
         .then(posts => posts.map(post => {
-            const {imageurl} = post;
-            return imageurl;
+            const {imageurls} = post;
+            return imageurls;
         }))
-        .then(imageurls => res.send(imageurls))
+        .then(imageurlses => res.send(imageurlses))
+        .catch(error => res.send(error));
+    })
+
+    //GET /detal posts 
+    app.get('/api/posts/:id', (req, res)=>{
+        const id = req.params.id;
+        
+        // validate id:
+        if(!ObjectId.isValid(id)){
+            const err = new Error();
+            err.status = 403;
+            err.message = 'invalid post id'
+            res.send(err);
+        }
+
+        // good to go:
+        Post.findById(id)
+        .then(post => res.send(post))
         .catch(error => res.send(error));
     })
 
     //POST
     app.post('/api/posts', (req, res)=>{
+        console.log(req.file);
+
+
         const body = req.body;
         const newPost = new Post({
             content: body.content,
-            imageurl: body.imageurl,
+            imageurls: body.imageurls,
             createat: Date.now(),
             userid: body.userid,
         })
@@ -42,4 +66,44 @@ module.exports = app => {
         .then(post => res.status(200).send())
         .catch(error => res.send(error));
     })
+
+    app.patch('/api/posts/:id', (req, res)=>{
+        const id = req.params.id;
+
+        //validate id:
+        if(!ObjectId.isValid(id)){
+            res.status(404).send();
+        }
+
+        // good to go:
+        const body = req.body;
+        body.editat = Date.now();
+        Post.findByIdAndUpdate(id, {$set: body}, {new: true})
+        .then(post => {
+            if(!post){
+                res.status(404).send();
+            }
+            res.send(post);
+        })
+        .catch(error => res.status(400).send(error));
+    });
+
+    app.delete('/api/posts/:id', (req, res)=>{
+        const id = req.params.id;
+
+        //validate id:
+        if(!ObjectId.isValid(id)){
+            res.status(404).send();
+        }
+
+        // good to go:
+        Post.findByIdAndRemove(id)
+        .then(post => {
+            if(!post){
+                res.status(404).send();
+            }
+            res.status(200).send();
+        })
+        .catch(error => res.status(400).send(error));
+    });
 }

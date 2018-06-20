@@ -7,11 +7,14 @@ const Post = mongoose.model('Post', {
         trim: true,
         minlength: 1,
     },
-    imageurl: {
+    imageurls: [{
         type: String,
         trim: true,
-    },
+    }],
     createat: {
+        type: Number
+    },
+    editat: {
         type: Number
     },
     userid: {

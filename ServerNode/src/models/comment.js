@@ -7,6 +7,12 @@ const Comment = mongoose.model('Comment', {
         trim: true,
         minlength: 1,
     },
+    createat: {
+        type: Number
+    },
+    editat: {
+        type: Number
+    },
     userid: {
         type: String,
         required: true,
