@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { URL_POST_POSTS } from '../../libs/constant';
+import {postPost} from '../../services/post.api.service';
 import axios from 'axios';
 
 export default class PostForm extends Component {
@@ -16,17 +17,9 @@ export default class PostForm extends Component {
 
     onSubmit(event) {
         event.preventDefault();
-        const fd = new FormData();
-        const { content, files } = this.state;
-        fd.append('content', content);
-        // importance: name files must be the same in multer:
-        // example: single('img') -> fd.append('img', file);
-        fd.append('files', files[0]);
-        fd.append('files', files[1]);
-        fd.append('userid', '5b27c8dddb3d7719c030f40b');
-        axios.post(URL_POST_POSTS, fd)
-            .then(post => console.log(post))
-            .catch(error => console.log(error));
+        const {files, content} = this.state;
+        postPost(files, {content})
+        .then(post =>console.log('post success', post))
     }
 
     render() {

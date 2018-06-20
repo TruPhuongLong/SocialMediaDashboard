@@ -2,17 +2,6 @@ import { Post } from '../models/post';
 import { ObjectId } from 'mongodb';
 import multer from 'multer';
 
-// var storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//       cb(null, '/tmp/my-uploads')
-//     },
-//     filename: function (req, file, cb) {
-//       cb(null, file.fieldname + '-' + Date.now())
-//     }
-//   })
-
-//   var upload = multer({ storage: storage })
-
 //Setup for save image:
 const storage = multer.diskStorage({
     // destination to save file:
@@ -92,18 +81,9 @@ module.exports = app => {
 
     //POST
     app.post('/api/posts',upload , (req, res) => {
-
-
-        // Everything went fine
-        console.log('req.file : ', req.file)
-        console.log('req.files : ', req.files)
-        console.log('req.body :', req.body)
-
         const body = req.body;
         const newPost = new Post({
             content: body.content,
-            // imageurls: [req.file.path],
-            imageurls: [],
             createat: Date.now(),
             userid: body.userid,
         })
@@ -113,8 +93,14 @@ module.exports = app => {
             err.message = 'invalid userid'
             res.send(err);
         }
+
+        // good to go:
+        // save album path:
+        if(req.files && req.files.length){
+            newPost.imageurls = req.files.map(file => file.path);
+        }
         newPost.save()
-            .then(post => res.status(200).send())
+            .then(post => res.status(200).send(post))
             .catch(error => res.send(error));
 
     })
