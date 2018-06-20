@@ -2,20 +2,33 @@ import { Post } from '../models/post';
 import { ObjectId } from 'mongodb';
 import multer from 'multer';
 
+// var storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, '/tmp/my-uploads')
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, file.fieldname + '-' + Date.now())
+//     }
+//   })
+
+//   var upload = multer({ storage: storage })
+
 //Setup for save image:
 const storage = multer.diskStorage({
     // destination to save file:
-    destination: (req, file, cb) => {
-        cb(null, './uploads/')
+    destination: function (req, file, cb) {
+        cb(null, 'uploads')
     },
     // set name of file:
-    filename: (req, file, cb) => {
-        cb(null, new Date().toISOString() + file.originalname);
+    filename: function (req, file, cb) {
+        console.log('file get: ', file)
+        cb(null, Date.now() + file.originalname);
     }
 });
 
 // filter type: jpeg, jpg, png
 const fileFilter = (req, file, cb) => {
+    console.log('fileFilter', file);
     if (file.mimetype === 'image/jpg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
         cb(null, true);
     } else {
@@ -33,7 +46,8 @@ const upload = multer({
         fileSize: 2000 * 2000 * 5
     },
     fileFilter: fileFilter
-});
+}).array('files');
+
 
 //ROUTE
 module.exports = app => {
@@ -77,14 +91,19 @@ module.exports = app => {
     })
 
     //POST
-    app.post('/api/posts', upload.array('PostAlbum'), (req, res) => {
-        console.log(req.files)
-        console.log(req.body)
+    app.post('/api/posts',upload , (req, res) => {
+
+
+        // Everything went fine
+        console.log('req.file : ', req.file)
+        console.log('req.files : ', req.files)
+        console.log('req.body :', req.body)
 
         const body = req.body;
         const newPost = new Post({
             content: body.content,
-            imageurls: req.files.map(file => file.path),
+            // imageurls: [req.file.path],
+            imageurls: [],
             createat: Date.now(),
             userid: body.userid,
         })
@@ -97,6 +116,7 @@ module.exports = app => {
         newPost.save()
             .then(post => res.status(200).send())
             .catch(error => res.send(error));
+
     })
 
     app.patch('/api/posts/:id', (req, res) => {
