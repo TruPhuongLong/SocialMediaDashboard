@@ -2,8 +2,8 @@ import React from 'react';
 
 export const ListComponent = ({ itemSource = [], renderRows = f => f }) => (
     <div style={localStyles.container}>
-        {itemSource.map(item =>
-            renderRows(item)
+        {itemSource.map((item, index)=>
+            renderRows(item, index)
         )}
     </div>
 )

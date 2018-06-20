@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 
 import './App.css';
-// import HomePage from './views/pages/home.page';
+import HomePage from './views/pages/home.page';
 import PostsPage from './views/pages/posts.page';
+import AlbumsPage from './views/pages/albums.page';
 import {NavComponent} from './views/components/nav.component';
+import PostForm from './views/components/post.form';
 
 class App extends Component {
   render() {
     return (
       <div>
         <NavComponent />
-        {/* <HomePage /> */}
+        <HomePage />
         <PostsPage />
+        <AlbumsPage />
+        <PostForm />
       </div>
     );
   }
@@ -40,9 +44,9 @@ struct:
  * ''
  * REQUIRED:
  * 
-● User can view list of users 
-● User can view list of posts of each user 
-● User can view list of albums of each user 
+● User can view list of users -> ok
+● User can view list of posts of each user -> ok
+● User can view list of albums of each user -> ...ok
 ● User can view the detail of each post and its comment 
 ● User can view list of photos from an album 
 ● User can view the detail of photo 

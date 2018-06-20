@@ -1,12 +1,15 @@
 import React from 'react';
+import {ItemAlbumComponent} from './item.album.component';
 
 export const ItemPostComponent = ({ item }) => {
     return (
         <div>
-            <p>{item.content}</p>
-            <i>{item.createat}</i>
-            <i>{item.editat}</i>
-            <img src={item.imageurls[0]} alt='post image' style={{width: '400px', height: '400px', objectFit: 'contain'}}/>
+            <p>content: {item.content}</p>
+            <i>create at: {item.createat}</i>
+            <i>edit at: {item.editat}</i>
+            <ItemAlbumComponent 
+                itemSource={item.imageurls}
+            />
         </div>
     )
 }
