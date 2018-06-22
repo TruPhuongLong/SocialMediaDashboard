@@ -4,10 +4,10 @@ import {initialState} from '../store/state';
 export const postReducer = (state = initialState, action) => {
     switch (action.type) {
         case typeAction.ADD:
-            break;
+            return state;
         case typeAction.REMOVE:
-            break;
+            return state;
         default:
-            break;
+            return state;
     }
 }
