@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {Provider} from 'react-redux';
+
+import {store} from './redux/store/store';
 
 import './App.css';
 import HomePage from './views/pages/home.page';
@@ -10,13 +13,16 @@ import PostForm from './views/components/post.form';
 class App extends Component {
   render() {
     return (
-      <div>
-        <NavComponent />
-        <HomePage />
-        <PostsPage />
-        <AlbumsPage />
-        <PostForm />
-      </div>
+      // <div>
+      //   <NavComponent />
+      //   <HomePage />
+      //   <PostsPage />
+      //   <AlbumsPage />
+      //   <PostForm />
+      // </div>
+      <Provider store={store}>
+
+      </Provider>
     );
   }
 }
@@ -50,6 +56,6 @@ struct:
 ● User can view the detail of each post and its comment 
 ● User can view list of photos from an album 
 ● User can view the detail of photo 
-● User can add, edit and delete post 
+● User can add, edit and delete post -> add ok, 
 ● User can add, edit and delete comment 
  */

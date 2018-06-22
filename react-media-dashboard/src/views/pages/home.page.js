@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { getUsers } from '../../services/user.api.service';
 import { ListComponent } from '../components/list.component';
 import { ItemUserComponent } from '../components/item.user.component';
+import {getUsers} from '../../services/auth.service';
 
 export default class HomePage extends Component {
 
