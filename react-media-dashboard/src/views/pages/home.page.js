@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { ListComponent } from '../components/list.component';
 import { ItemUserComponent } from '../components/item.user.component';
 import { getUsersAction } from '../../redux/actions/user.action';
-import { getPostsPerUserAction, getAlbumsPerUserAction } from '../../redux/actions/post.action';
+import { setUserOfPostsAction, getAlbumsPerUserAction } from '../../redux/actions/post.action';
 
 class HomePage extends Component {
 
@@ -14,15 +14,23 @@ class HomePage extends Component {
     }
 
     _viewListPosts = (user) => {
-        const {history, viewListPosts} = this.props;
-        history.push('/posts');
-        viewListPosts(user);
+        const {history, setUserOfPosts} = this.props;
+
+        // update user of this list post: for post page show detail user.
+        setUserOfPosts(user);
+
+        // push to post page: with userid:
+        history.push(`/posts/${user._id}`);
     }
 
     _viewListAlbums = (user) => {
-        const {history, viewListAlbums} = this.props;
-        history.push('/albums');
-        viewListAlbums(user);
+        const {history, setUserOfPosts} = this.props;
+
+        // update user of this list post: for post page show detail user.
+        setUserOfPosts(user);
+
+        // push to album page: with userid:
+        history.push(`/albums/${user._id}`);
     }
 
     render() {
@@ -48,29 +56,23 @@ class HomePage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        users: state.userReducer.users,
+        users: state.userReducer.users, // for update list user:
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        // get list of user:
         getUsers: () => {
             getUsersAction()
                 .then(action => {
                     dispatch(action);
                 })
         },
-        viewListPosts: (user) => {
-            getPostsPerUserAction(user)
-                .then(action => {
-                    dispatch(action);
-                })
-        },
-        viewListAlbums: (user) => {
-            getAlbumsPerUserAction(user)
-                .then(action => {
-                    dispatch(action);
-                })
+
+        // for update current user of list post or album:
+        setUserOfPosts: (user) => {
+            dispatch(setUserOfPostsAction(user));
         }
     }
 }

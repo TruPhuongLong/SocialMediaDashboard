@@ -7,14 +7,18 @@ export const postReducer = (state = initialState.postState, action) => {
             return {
                 ...state,
                 posts: action.payload.posts,
-                user: action.payload.user,
             }
 
         case typeAction.GET_ALBUMS_PER_UER:
             return {
                 ...state,
-                user: action.payload.user,
                 imageurlses: action.payload.imageurlses,
+            }
+
+        case typeAction.SET_USER_OF_POSTS:
+            return {
+                ...state,
+                user: action.payload.user
             }
         default:
             return state;

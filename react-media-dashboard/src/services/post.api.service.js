@@ -12,7 +12,6 @@ export const getPostsPerUser = (userid) => {
             return post;
         }))
         .then(posts => {
-            console.log(posts)
             return posts;
         });
 }
@@ -27,8 +26,8 @@ export const getAlbumsPerUser = (userid) => {
         }));
 }
 
-export const postPost = (model, files) => {
-    model.userid = '5b27c8dddb3d7719c030f40b';
+export const postPost = (user, model, files) => {
+    model.userid = user._id;
     return postForm(URL_POSTS, model, files);
 }
 

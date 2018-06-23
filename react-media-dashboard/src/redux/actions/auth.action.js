@@ -14,7 +14,7 @@ export const loginAction = (model) => {
                     }
                 }
             }else{
-                return errorAction('auth invalid');
+                return errorAction('auth fail');
             }            
         })
 }
@@ -36,11 +36,7 @@ export const signupAction = (model) => {
     return signup(model)
         .then(res => {
             return {
-                type: typeAction.SIGNUP,
-                payload: {
-                    islogin: false,
-                    user: {}
-                }
+                type: typeAction.SIGNUP
             }
         })
 }

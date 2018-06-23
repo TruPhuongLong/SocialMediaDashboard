@@ -5,8 +5,19 @@ export const typeAction = {
     LOGOUT: 'LOGOUT',
 
     GET_USERS: 'GET_USERS',
+
+    //post api
     GET_POSTS_PER_USER: 'GET_POSTS_PER_USER',
     GET_ALBUMS_PER_UER: 'GET_ALBUMS_PER_UER',
+    SET_USER_OF_POSTS: 'SET_USER_OF_POSTS',
 
-    ERROR: 'ERROR'
+    //comment api
+    GET_COMMENTS: 'GET_COMMENTS',
+    POST_COMMENT: 'POST_COMMENT',
+    PATCH_COMMENT: 'PATCH_COMMENT',
+    DELETE_COMMENT: 'DELETE_COMMENT',
+
+    // status
+    ERROR: 'ERROR',
+    SUCCESS: 'SUCCESS'
 }

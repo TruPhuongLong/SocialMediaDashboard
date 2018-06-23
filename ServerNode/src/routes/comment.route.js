@@ -27,7 +27,7 @@ module.exports = app => {
         const body = req.body;
         const newComment = new Comment({
             content: body.content,
-            userid: body.userid,
+            username: body.username,
             postid: body.postid,
             createat: Date.now()
         })

@@ -1,16 +1,19 @@
-const comments = [
-    {_id: 1, content: 'comment 1', userid: 1, postid: 1, createat: 222, editat: 444},
-    {_id: 2, content: 'comment 1', userid: 2, postid: 1, createat: 222, editat: 444},
-    {_id: 3, content: 'comment 1', userid: 1, postid: 2, createat: 222, editat: 444},
-    {_id: 4, content: 'comment 1', userid: 2, postid: 2, createat: 222, editat: 444},
-    {_id: 5, content: 'comment 1', userid: 1, postid: 2, createat: 222, editat: 444},
-]
+import {URL_COMMENT} from '../libs/constant';
+import {get, post, patch, _delete} from './data.service';
 
-export const getComments = (userid, postid) => {
-    return new Promise(resolve => {
-        setTimeout(()=>{
-            resolve(comments);
-        }, 1000);
-    });
+export const getComments = (postid) => {
+    return get(URL_COMMENT + '/' + postid);
+}
+
+export const postComment = (model) => {
+    return post(URL_COMMENT, model);
+}
+
+export const patchComment = (id) => {
+    return patch(URL_COMMENT + '/' + id);
+}
+
+export const deleteComment = (id) => {
+    return _delete(URL_COMMENT + '/' + id);
 }
 

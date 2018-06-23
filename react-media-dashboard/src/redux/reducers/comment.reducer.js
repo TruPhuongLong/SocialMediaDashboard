@@ -1,13 +1,14 @@
 import { typeAction } from '../actions/type.action';
 import { initialState } from '../store/state';
 
-export const userReducer = (state = initialState.userState, action) => {
+export const commentReducer = (state = initialState.commentState, action) => {
     switch (action.type) {
-        case typeAction.GET_USERS:
+        case typeAction.GET_COMMENTS:
             return {
                 ...state,
-                users: action.payload
+                comments: action.payload.comments
             }
+        
         default:
             return state;
     }

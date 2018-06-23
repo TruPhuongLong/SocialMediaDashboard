@@ -14,6 +14,9 @@ export const URL_POSTS = BASE_URL_API + '/posts'; // for crud action: get, post,
 export const URL_GET_POSTS_PER_USER = URL_POSTS + '/listposts/'; // need suffix userid
 export const URL_GET_ALBUMS_PER_UER = URL_POSTS + '/listalbums/'; // need suffix userid
 
+//comment api:
+export const URL_COMMENT = BASE_URL_API + '/comments'
+
 
 //for upload file:
 // importance: name files must be the same in multer:

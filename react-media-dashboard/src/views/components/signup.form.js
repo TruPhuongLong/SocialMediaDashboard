@@ -1,10 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import { isEmail } from 'validator';
 
 import Field from './field.component';
-import { signup } from '../../services/auth.service';
+import { signupAction } from '../../redux/actions/auth.action';
 
-export default class SignupForm extends React.Component {
+class SignupForm extends React.Component {
 
     state = {
         fields: {
@@ -18,8 +20,12 @@ export default class SignupForm extends React.Component {
 
     _onSubmit(event) {
         event.preventDefault();
-        signup(this.state.fields)
-            .then(res => console.log(res));
+
+        // request server signup
+        this.props.signup(this.state.fields)
+        .then(res => {
+            this.props.history.push('/');
+        })
     }
 
     onInputChanged = ({ name, value, errors }) => {
@@ -37,7 +43,7 @@ export default class SignupForm extends React.Component {
         const { username, email, password, passwordConf } = this.state.fields;
         const { fieldErrors } = this.state;
         return (
-            <form className="form-horizontal" onSubmit={this._onSubmit.bind(this)}>
+            <form className="form-horizontal container" onSubmit={this._onSubmit.bind(this)}>
                 <div className="form-group">
                     <label className="col-sm-2" > UserName: </label>
                     <div className="col-sm-10">
@@ -104,8 +110,31 @@ export default class SignupForm extends React.Component {
                     </div>
                 </div>
 
-                <button type="submit" className="btn btn-primary" disabled={Object.keys(fieldErrors).length}>Signup</button>
+                <div className="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" className="btn btn-primary" disabled={Object.keys(fieldErrors).length}>Signup</button>
+                    </div>
+                </div>
             </form>
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        signup: (model) => {
+            return signupAction(model)
+                .then(action => dispatch(action));
+        }
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(withRouter(SignupForm));

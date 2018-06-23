@@ -10,5 +10,8 @@ export const initialState = {
         posts: [],
         user: {},
         imageurlses: []  
+    },
+    commentState: {
+        comments: []
     }
 }

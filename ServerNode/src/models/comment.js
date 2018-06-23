@@ -13,7 +13,7 @@ const Comment = mongoose.model('Comment', {
     editat: {
         type: Number
     },
-    userid: {
+    username: {
         type: String,
         required: true,
         trim: true
