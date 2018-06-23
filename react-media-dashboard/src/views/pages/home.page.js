@@ -1,29 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
 import { ListComponent } from '../components/list.component';
 import { ItemUserComponent } from '../components/item.user.component';
-import {getUsers} from '../../services/auth.service';
+import { getUsersAction } from '../../redux/actions/user.action';
+import { getPostsPerUserAction, getAlbumsPerUserAction } from '../../redux/actions/post.action';
 
-export default class HomePage extends Component {
-
-    state = {
-        users: []
-    }
+class HomePage extends Component {
 
     componentDidMount() {
-        getUsers()
-            .then(users => this.setState({ users }));
+        this.props.getUsers();
     }
 
-    viewListPosts(user){
-        console.log('viewListPosts', user)
+    _viewListPosts = (user) => {
+        const {history, viewListPosts} = this.props;
+        history.push('/posts');
+        viewListPosts(user);
     }
 
-    viewListAlbums(user){
-        console.log('viewListAlbums', user)
+    _viewListAlbums = (user) => {
+        const {history, viewListAlbums} = this.props;
+        history.push('/albums');
+        viewListAlbums(user);
     }
 
     render() {
-        const { users } = this.state;
+        const { users } = this.props;
         return (
             <div>
                 <h1>Home Page</h1>
@@ -33,8 +36,8 @@ export default class HomePage extends Component {
                         <ItemUserComponent
                             key={user._id}
                             item={user}
-                            viewListPosts={this.viewListPosts}
-                            viewListAlbums={this.viewListAlbums}
+                            viewListPosts={this._viewListPosts}
+                            viewListAlbums={this._viewListAlbums}
                         />
                     )}
                 />
@@ -43,3 +46,36 @@ export default class HomePage extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        users: state.userReducer.users,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        getUsers: () => {
+            getUsersAction()
+                .then(action => {
+                    dispatch(action);
+                })
+        },
+        viewListPosts: (user) => {
+            getPostsPerUserAction(user)
+                .then(action => {
+                    dispatch(action);
+                })
+        },
+        viewListAlbums: (user) => {
+            getAlbumsPerUserAction(user)
+                .then(action => {
+                    dispatch(action);
+                })
+        }
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(withRouter(HomePage));

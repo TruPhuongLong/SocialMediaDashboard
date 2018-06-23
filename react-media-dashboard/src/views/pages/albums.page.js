@@ -1,37 +1,46 @@
-import React, { Component } from 'react';
+import React from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+
 import { ListComponent } from '../components/list.component';
 import { ItemAlbumComponent } from '../components/item.album.component';
-import { getAlbumsPerUser } from '../../services/post.api.service';
 
-export default class AlbumsPage extends Component {
 
-    state = {
-        imageurlses: [],
-        user: {}
-    }
+const AlbumsPage = ({ imageurlses, user }) => {
+    return (
+        <div>
+            <h1>Albums Page</h1>
+            <h3>Post by: {user.username}</h3>
+            <i>email: {user.email}</i>
+            <ListComponent
+                itemSource={imageurlses}
+                renderRows={(imageurls, index) => (
+                    <ItemAlbumComponent
+                        key={index}
+                        itemSource={imageurls}
+                    />
+                )}
+            />
+        </div>
+    )
+}
 
-    componentDidMount() {
-        getAlbumsPerUser('5b27c8dddb3d7719c030f40b')
-            .then(imageurlses => this.setState({ imageurlses }))
-    }
 
-    render() {
-        const { imageurlses, user } = this.state;
-        return (
-            <div>
-                <h1>Albums Page</h1>
-                <h3>Post by: {user.username}</h3>
-                <i>email: {user.email}</i>
-                <ListComponent
-                    itemSource={imageurlses}
-                    renderRows={(imageurls, index) => (
-                        <ItemAlbumComponent
-                            key={index}
-                            itemSource={imageurls}
-                        />
-                    )}
-                />
-            </div>
-        )
+const mapStateToProps = (state) => {
+    const {user, imageurlses} = state.postReducer;
+    return {
+        user,
+        imageurlses,
     }
 }
+
+function mapDispatchToProps(dispatch) {
+    return {
+        
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(withRouter(AlbumsPage));

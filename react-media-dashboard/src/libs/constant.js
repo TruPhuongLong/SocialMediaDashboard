@@ -19,3 +19,6 @@ export const URL_GET_ALBUMS_PER_UER = URL_POSTS + '/listalbums/'; // need suffix
 // importance: name files must be the same in multer:
 // example: array('files') -> fd.append('files', f);
 export const KEY_FILE_UPLOAD = 'files';
+
+//access_token:
+export const ACCESS_TOKEN = 'access_token';

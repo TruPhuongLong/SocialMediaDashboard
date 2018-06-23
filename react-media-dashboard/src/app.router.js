@@ -14,7 +14,7 @@ export const AppRouter = () => {
         <Router>
             <div>
                 <NavComponent />
-                <ul>
+                {/* <ul>
                     <li><NavLink to="/" exact activeStyle={{ color: 'green' }}>Home</NavLink></li>
                     <li><NavLink to="/posts" exact activeStyle={{ color: 'green' }}>Post</NavLink></li>
                     <li><NavLink to="/albums" exact activeStyle={{ color: 'green' }}>Albums</NavLink></li>
@@ -24,7 +24,7 @@ export const AppRouter = () => {
 
                 <Prompt when={true} message={(location) => {
                     return location.pathname.startsWith('/posts') ? "you need login" : true;
-                }} />
+                }} /> */}
 
                 <Route path="/" exact strict component={HomePage} />
 

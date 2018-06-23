@@ -37,7 +37,7 @@ module.exports = app => {
             const { _id, username, email } = user;
             const _user = { _id, username, email };
             const token = jwt.sign(_user, CONSTANCE.JWT_KEY, { expiresIn: "15d" });
-            res.json({ token, user: _user });
+            res.json({ token, _user });
         })
     });
 
@@ -49,7 +49,7 @@ module.exports = app => {
                 if (err) {
                     return next(err);
                 } else {
-                    return res.redirect('/');
+                    return res.status(200).send();
                 }
             });
         }
@@ -59,6 +59,7 @@ module.exports = app => {
     //API:
     //GET /list users
     app.get('/api/users', (req, res) => {
+        console.log('=== go api/users');
         User.find()
             .then(users => {
                 return users.map(user => {

@@ -7,9 +7,8 @@ import { login } from '../../services/auth.service';
 const NavComponent = ({ history }) => {
 
     const _onLogin = (model) => {
-        console.log(model);
         login(model)
-            .then(res => console.log(res));
+            .then(res => window.alert('success'));
     }
 
     const _onSignup = () => {

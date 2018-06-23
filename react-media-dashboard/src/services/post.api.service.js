@@ -11,9 +11,9 @@ export const getPostsPerUser = (userid) => {
             }
             return post;
         }))
-        .then(post => {
-            console.log(post)
-            return post;
+        .then(posts => {
+            console.log(posts)
+            return posts;
         });
 }
 
