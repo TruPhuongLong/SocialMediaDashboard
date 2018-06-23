@@ -15,17 +15,31 @@ export default class Field extends Component {
 
     state = {
         value: this.props.value,
-        errors: false
+        errors: []
     }
 
+    touched = false;
+
     componentWillReceiveProps(update) {
-        this.setState({ value: update.value })
+        this.setState({ value: update.value });
+    }
+
+    componentDidMount(){
+         // for parent get errors if exist at first render:
+         this.update(this.state.value);
     }
 
     _onChange = (event) => {
+        this.touched = true;
+        this.update(event.target.value);
+    }
+
+    update(value){
         const { name, validates, onChange } = this.props;
-        const value = event.target.value;
-        const errors = validates && validates.length ? validates.map(validate => validate(value)) : false;
+        let errors = validates && validates.length ? validates.map(validate => validate(value)) : false;
+        // if errors is array : [null, null, ...] => we set errors = false;
+        if(errors && errors.length && !errors.filter(error => error).length) errors = false;
+        console.log(errors);
         this.setState({ value, errors });
         onChange({ name, value, errors });
     }
@@ -44,10 +58,10 @@ export default class Field extends Component {
                     onChange={this._onChange}
                 />
                 {
-                    errors && errors.length ?
-                        errors.map(error => {
-                            <span style={{ color: 'red' }}>{error}</span>
-                        }) :
+                    errors && errors.length && this.touched ?
+                        errors.map((error, index) => 
+                            <p key={index} style={{ color: 'red' }}>{error}</p>
+                        ) :
                         null
                 }
             </div>

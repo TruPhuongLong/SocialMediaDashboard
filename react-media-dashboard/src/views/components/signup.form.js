@@ -15,26 +15,18 @@ export default class SignupForm extends React.Component {
 
     _onSubmit(event) {
         event.preventDefault();
-        const fieldErrors = this.validate(this.state.fields);
-        this.setState({fieldErrors})
-        if(Object.keys(fieldErrors).length) return;
-        // good to go:
-        console.log('good to go')
+
     }
 
-    onInputChanged = (event) => {
-        const {fields} = this.state;
-        fields[event.target.name] = event.target.value;
-        this.setState({ fields })
-    }
-
-    validate = (user) => {
-        const errors = {};
-        if(!user.username) errors.username = 'UserName Required';
-        if(!user.email) errors.email = 'Email Required';
-        if(!user.password) errors.password = 'Password Required';
-        if(!user.passwordConf) errors.passwordConf = 'PasswordConf Required';
-        return errors;
+    onInputChanged = ({name, value, errors}) => {
+        const {fields, fieldErrors} = this.state;
+        fields[name] = value;
+        if(errors){
+            fieldErrors[name] = errors;
+        }else{
+            delete fieldErrors[name];
+        }
+        this.setState({ fields, fieldErrors })
     }
 
     render() {
@@ -51,8 +43,11 @@ export default class SignupForm extends React.Component {
                             name="username"
                             value={username}
                             onChange={this.onInputChanged}
+                            validates={[
+                                (val) => val ? null : 'username required',
+                                (val) => val.length > 3 ? null : 'username must atleast 3 character'
+                            ]}
                         />
-                        <span style={{color: 'red'}}>{fieldErrors.username}</span>
                     </div>
                 </div>
 
@@ -66,7 +61,6 @@ export default class SignupForm extends React.Component {
                             value={email}
                             onChange={this.onInputChanged}
                         />
-                        <span style={{color: 'red'}}>{fieldErrors.email}</span>
                     </div>
                 </div>
 
@@ -80,7 +74,6 @@ export default class SignupForm extends React.Component {
                             value={password}
                             onChange={this.onInputChanged}
                         />
-                        <span style={{color: 'red'}}>{fieldErrors.password}</span>
                     </div>
                 </div>
 
@@ -94,11 +87,10 @@ export default class SignupForm extends React.Component {
                             value={passwordConf}
                             onChange={this.onInputChanged}
                         />
-                        <span style={{color: 'red'}}>{fieldErrors.passwordConf}</span>
                     </div>
                 </div>
 
-                <button type="submit" className="btn btn-primary">Signup</button>
+                <button type="submit" className="btn btn-primary" disabled={Object.keys(fieldErrors).length}>Signup</button>
             </form>
         )
     }
