@@ -1,5 +1,8 @@
 import React from 'react';
+import { isEmail } from 'validator';
+
 import Field from './field.component';
+import { signup } from '../../services/auth.service';
 
 export default class SignupForm extends React.Component {
 
@@ -15,15 +18,16 @@ export default class SignupForm extends React.Component {
 
     _onSubmit(event) {
         event.preventDefault();
-
+        signup(this.state.fields)
+            .then(res => console.log(res));
     }
 
-    onInputChanged = ({name, value, errors}) => {
-        const {fields, fieldErrors} = this.state;
+    onInputChanged = ({ name, value, errors }) => {
+        const { fields, fieldErrors } = this.state;
         fields[name] = value;
-        if(errors){
+        if (errors) {
             fieldErrors[name] = errors;
-        }else{
+        } else {
             delete fieldErrors[name];
         }
         this.setState({ fields, fieldErrors })
@@ -31,7 +35,7 @@ export default class SignupForm extends React.Component {
 
     render() {
         const { username, email, password, passwordConf } = this.state.fields;
-        const {fieldErrors} = this.state;
+        const { fieldErrors } = this.state;
         return (
             <form className="form-horizontal" onSubmit={this._onSubmit.bind(this)}>
                 <div className="form-group">
@@ -60,6 +64,9 @@ export default class SignupForm extends React.Component {
                             name="email"
                             value={email}
                             onChange={this.onInputChanged}
+                            validates={[
+                                (val) => isEmail(val) ? null : 'email invalid'
+                            ]}
                         />
                     </div>
                 </div>
@@ -73,6 +80,9 @@ export default class SignupForm extends React.Component {
                             name="password"
                             value={password}
                             onChange={this.onInputChanged}
+                            validates={[
+                                (val) => val.length >= 6 ? null : 'password must atleast 6 character'
+                            ]}
                         />
                     </div>
                 </div>
@@ -86,6 +96,10 @@ export default class SignupForm extends React.Component {
                             name="passwordConf"
                             value={passwordConf}
                             onChange={this.onInputChanged}
+                            validates={[
+                                (val) => val.length >= 6 ? null : 'passwordConf must atleast 6 character',
+                                val => val === password ? null : 'passwordConf invalid'
+                            ]}
                         />
                     </div>
                 </div>

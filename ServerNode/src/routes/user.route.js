@@ -29,15 +29,15 @@ module.exports = app => {
         const body = req.body;
         User.authenticate(body.email, body.password, (err, user) => {
             if (err) {
-                res.send(err);
+                return res.send(err);
             }
             if (!user) {
-                res.status(404).send();
+                return res.status(404).send();
             }
-            const {_id, username, email} = user;
-            const _user = {_id, username, email};
-            const token = jwt.sign(_user, CONSTANCE.JWT_KEY, {expiresIn: "15d"});
-            res.json({token});
+            const { _id, username, email } = user;
+            const _user = { _id, username, email };
+            const token = jwt.sign(_user, CONSTANCE.JWT_KEY, { expiresIn: "15d" });
+            res.json({ token, user: _user });
         })
     });
 
@@ -58,19 +58,19 @@ module.exports = app => {
 
     //API:
     //GET /list users
-    app.get('/api/users', (req, res)=>{
+    app.get('/api/users', (req, res) => {
         User.find()
-        .then(users => {
-            return users.map(user => {
-                const {_id, email, username} = user;
-                return {_id, email, username};
+            .then(users => {
+                return users.map(user => {
+                    const { _id, email, username } = user;
+                    return { _id, email, username };
+                })
             })
-        })
-        .then(users => {
-            res.send(users);
-        })
-        .catch(error => {
-            res.send(error);
-        })
+            .then(users => {
+                res.send(users);
+            })
+            .catch(error => {
+                res.send(error);
+            })
     })
 }

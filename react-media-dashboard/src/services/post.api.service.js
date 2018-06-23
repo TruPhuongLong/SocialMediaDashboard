@@ -1,4 +1,4 @@
-import { URL_GET_POSTS_PER_USER, URL_GET_ALBUMS_PER_UER, BASE_URL, URL_POST_POSTS } from '../libs/constant';
+import { URL_GET_POSTS_PER_USER, URL_GET_ALBUMS_PER_UER, BASE_URL, URL_POSTS } from '../libs/constant';
 import { get, post, postForm, patch, patchForm, _delete } from './data.service';
 
 export const getPostsPerUser = (userid) => {
@@ -29,7 +29,7 @@ export const getAlbumsPerUser = (userid) => {
 
 export const postPost = (model, files) => {
     model.userid = '5b27c8dddb3d7719c030f40b';
-    return postForm(URL_POST_POSTS, model, files);
+    return postForm(URL_POSTS, model, files);
 }
 
 

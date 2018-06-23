@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export default class Field extends Component {
 
     static propTypes = {
-        type: PropTypes.string.isRequired,
+        type: PropTypes.string,
         placeholder: PropTypes.string,
         name: PropTypes.string.isRequired,
         value: PropTypes.string,
@@ -12,6 +12,10 @@ export default class Field extends Component {
         onChange: PropTypes.func.isRequired,
         className: PropTypes.string,
     };
+
+    static propDefault = {
+        type: 'text'
+    }
 
     state = {
         value: this.props.value,
@@ -39,7 +43,6 @@ export default class Field extends Component {
         let errors = validates && validates.length ? validates.map(validate => validate(value)) : false;
         // if errors is array : [null, null, ...] => we set errors = false;
         if(errors && errors.length && !errors.filter(error => error).length) errors = false;
-        console.log(errors);
         this.setState({ value, errors });
         onChange({ name, value, errors });
     }

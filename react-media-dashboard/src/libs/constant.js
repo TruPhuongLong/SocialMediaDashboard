@@ -1,10 +1,19 @@
 export const BASE_URL = 'http://localhost:6789';
-export const BASE_URL_API = BASE_URL + '/api';
+const BASE_URL_API = BASE_URL + '/api';
 
+//auth url:
+export const URL_LOGIN = BASE_URL + '/login';
+export const URL_SIGNUP = BASE_URL + '/signup';
+export const URL_LOGOUT = BASE_URL + '/logout';
+
+//user api:
 export const URL_GET_USERS = BASE_URL_API + '/users';
-export const URL_GET_POSTS_PER_USER = BASE_URL_API + '/posts/listposts/'; // need suffix userid
-export const URL_GET_ALBUMS_PER_UER = BASE_URL_API + '/posts/listalbums/'; // need suffix userid
-export const URL_POST_POSTS = BASE_URL_API + '/posts';
+
+//post api:
+export const URL_POSTS = BASE_URL_API + '/posts'; // for crud action: get, post, patch, delete
+export const URL_GET_POSTS_PER_USER = URL_POSTS + '/listposts/'; // need suffix userid
+export const URL_GET_ALBUMS_PER_UER = URL_POSTS + '/listalbums/'; // need suffix userid
+
 
 //for upload file:
 // importance: name files must be the same in multer:

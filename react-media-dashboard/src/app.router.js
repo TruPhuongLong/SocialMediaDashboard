@@ -7,7 +7,7 @@ import AlbumsPage from './views/pages/albums.page';
 import PostForm from './views/components/post.form';
 import SignupForm from './views/components/signup.form';
 
-import {NavComponent} from './views/components/nav.component';
+import NavComponent from './views/components/nav.component';
 
 export const AppRouter = () => {
     return (
