@@ -1,18 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 
 import { LoginForm } from './login.form';
-import { login } from '../../services/auth.service';
+import { WelcomeComponent } from './welcome.component';
+import { loginAction, logoutAction } from '../../redux/actions/auth.action';
 
-const NavComponent = ({ history }) => {
+const NavComponent = ({ history, islogin, user, onLogin, onLogout }) => {
 
     const _onLogin = (model) => {
-        login(model)
-            .then(res => window.alert('success'));
+        onLogin(model);
     }
 
     const _onSignup = () => {
         history.push('/signup')
+    }
+
+    const _onLogout = () => {
+        onLogout();
     }
 
     return (
@@ -22,14 +27,46 @@ const NavComponent = ({ history }) => {
                     <NavLink to="/" exact className="navbar-brand">Home</NavLink>
                 </div>
                 <div className="navbar-form navbar-right">
-                    <LoginForm
-                        onLogin={_onLogin}
-                        onSignup={_onSignup}
-                    />
+                    {
+                        islogin ?
+                            <WelcomeComponent
+                                user={user}
+                                onLogout={_onLogout}
+                            /> :
+                            <LoginForm
+                                onLogin={_onLogin}
+                                onSignup={_onSignup}
+                            />
+
+                    }
                 </div>
             </div>
         </nav>
     )
 }
 
-export default withRouter(NavComponent);
+const mapStateToProps = (state) => {
+    const { islogin, user } = state.authReducer;
+    return {
+        islogin,
+        user,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onLogin: (user) => {
+            loginAction(user)
+                .then(action => dispatch(action));
+        },
+        onLogout: () => {
+            logoutAction()
+                .then(action => dispatch(action));
+        }
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(withRouter(NavComponent));

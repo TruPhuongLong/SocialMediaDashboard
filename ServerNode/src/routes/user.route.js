@@ -29,7 +29,7 @@ module.exports = app => {
         const body = req.body;
         User.authenticate(body.email, body.password, (err, user) => {
             if (err) {
-                return res.send(err);
+                return res.status(400).send(err);
             }
             if (!user) {
                 return res.status(404).send();
@@ -59,7 +59,6 @@ module.exports = app => {
     //API:
     //GET /list users
     app.get('/api/users', (req, res) => {
-        console.log('=== go api/users');
         User.find()
             .then(users => {
                 return users.map(user => {
